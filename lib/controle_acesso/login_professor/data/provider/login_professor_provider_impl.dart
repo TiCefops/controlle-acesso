@@ -1,13 +1,31 @@
-import 'package:cefops_controll_acess/controle_acesso/login_professor/data/interfaces/model/i_login_professor_model.dart';
-import 'package:cefops_controll_acess/controle_acesso/login_professor/data/interfaces/provider/i_login_professor_provider.dart';
-import 'package:cefops_controll_acess/core/erros/common_errors.dart';
-import 'package:either_dart/src/either.dart';
+import 'package:either_dart/either.dart';
 
-class LoginProfessorProviderImpl implements ILoginProfessorProvider{
+import '../model/login_professor_model_impl.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+import '../interfaces/model/i_login_professor_model.dart';
+import '../interfaces/provider/i_login_professor_provider.dart';
+import '../../../../core/erros/common_errors.dart';
+
+class LoginProfessorProviderImpl implements ILoginProfessorProvider {
+  final FirebaseFirestore firestore;
+
+  LoginProfessorProviderImpl({required this.firestore});
+
   @override
-  Future<Either<CommonErrors, ILoginProfessorModel>> login({required String cpf}) {
-    // TODO: implement login
-    throw UnimplementedError();
+  Future<Either<CommonErrors, ILoginProfessorModel>> login(
+      {required String cpf,required String hospital} ) async {
+    CollectionReference hospitais = firestore.collection("hospitais");
+    final professor = await hospitais.doc(hospital).collection("professores").where(
+        "cpf", isEqualTo: cpf).get();
+
+    if (professor.docs.isNotEmpty){
+      return Right(     LoginProfessorModelImpl.fromJson(professor.docs.first.data())
+      );
+    }else{
+      CommonErrors erro=const CommonErrors(key:CommonErrorCode.notFound );
+      return Left(erro);
+    }
   }
 
 }

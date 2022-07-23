@@ -1,11 +1,12 @@
-enum AppError {
+enum CommonErrorCode {
   notFound,
   connectionError,
+
 
 }
 
 class CommonErrors {
-  final AppError key;
+  final CommonErrorCode key;
   final String? message;
 
   const CommonErrors({

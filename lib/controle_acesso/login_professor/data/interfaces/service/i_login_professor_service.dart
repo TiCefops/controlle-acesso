@@ -4,5 +4,5 @@ import '../../../../../core/erros/common_errors.dart';
 import '../model/i_login_professor_model.dart';
 
 abstract class ILoginProfessorService{
-  Future<Either<CommonErrors,ILoginProfessorModel>> login({required String cpf});
+  Future<Either<CommonErrors,ILoginProfessorModel>> login({required String cpf,required String hospital});
 }

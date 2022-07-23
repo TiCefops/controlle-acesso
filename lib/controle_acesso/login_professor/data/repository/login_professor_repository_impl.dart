@@ -1,13 +1,16 @@
-
-import 'package:cefops_controll_acess/controle_acesso/login_professor/data/interfaces/model/i_login_professor_model.dart';
-import 'package:cefops_controll_acess/controle_acesso/login_professor/data/interfaces/repository/i_login_professor_repository.dart';
-import 'package:cefops_controll_acess/core/erros/common_errors.dart';
+import 'package:cefops_controll_acess/controle_acesso/login_professor/data/interfaces/provider/i_login_professor_provider.dart';
 import 'package:either_dart/src/either.dart';
 
+import '../../../../core/erros/common_errors.dart';
+import '../interfaces/model/i_login_professor_model.dart';
+import '../interfaces/repository/i_login_professor_repository.dart';
+
 class LoginProfessorRepositoryImpl implements ILoginProfessorRepository{
+  final ILoginProfessorProvider provider;
+
+  LoginProfessorRepositoryImpl(this.provider);
   @override
-  Future<Either<CommonErrors, ILoginProfessorModel>> login({required String cpf}) {
-    // TODO: implement login
-    throw UnimplementedError();
+  Future<Either<CommonErrors, ILoginProfessorModel>> login({required String cpf,required String hospital}) async{
+   return await provider.login(cpf: cpf,hospital: hospital);
   }
 }
